@@ -2,6 +2,9 @@ language: php
 
 php:
   - 7.2
+  - 7.2
+    env:
+      - COMPOSER_SNAPSHOT=1
   - 7.3
   - 7.4
   - nightly
@@ -10,6 +13,7 @@ sudo: false
 
 env:
   global:
+    - COMPOSER_SNAPSHOT=0
     - COMPOSER_DISABLE_XDEBUG_WARN=1
 
 matrix:
@@ -19,6 +23,7 @@ matrix:
 
 before_script:
   - travis_retry composer install --prefer-source --no-interaction
+  - if [[ $COMPOSER_SNAPSHOT == 1 ]]; then composer require composer/composer:^2.0@dev --prefer-stable --update-with-dependencies; fi
 
 script: composer test
 
